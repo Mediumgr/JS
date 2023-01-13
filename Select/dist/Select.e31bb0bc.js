@@ -125,18 +125,124 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Select = void 0;
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classPrivateMethodInitSpec(obj, privateSet) { _checkPrivateRedeclaration(obj, privateSet); privateSet.add(obj); }
+function _checkPrivateRedeclaration(obj, privateCollection) { if (privateCollection.has(obj)) { throw new TypeError("Cannot initialize the same private elements twice on an object"); } }
+function _classPrivateMethodGet(receiver, privateSet, fn) { if (!privateSet.has(receiver)) { throw new TypeError("attempted to get private field on non-instance"); } return fn; }
 var getTemplate = function getTemplate() {
-  return "<div class=\"select__input\" data-type=\"input\">fdfsdfs</div>\n          <div class=\"select__dropdown\">\n            <ul class=\"select__list\">\n              <li class=\"select__item\"></li>\n              <li class=\"select__item\"></li>\n            </ul>\n          </div>";
+  var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var placeholder = arguments.length > 1 ? arguments[1] : undefined;
+  var selectedId = arguments.length > 2 ? arguments[2] : undefined;
+  var text = placeholder !== null && placeholder !== void 0 ? placeholder : 'Placeholder по умолчанию';
+  var items = data.map(function (item) {
+    var cls = '';
+    if (item.id === selectedId) {
+      text = item.value;
+      cls = 'selected';
+    }
+    return "\n      <li class=\"select__item ".concat(cls, "\" data-type=\"item\" data-id=\"").concat(item.id, "\">").concat(item.value, "</li>\n    ");
+  });
+  return "\n    <span class=\"arrow-down\"></span>\n    <div class=\"select__backdrop\" data-type=\"backdrop\"></div>\n    <div class=\"select__input\" data-type=\"input\">\n      <span data-type=\"value\">".concat(text, "</span>\n    </div>\n    <div class=\"select__dropdown\">\n      <ul class=\"select__list\">\n        ").concat(items.join(''), "\n      </ul>\n    </div>\n  ");
 };
-var Select = /*#__PURE__*/_createClass(function Select() {
-  _classCallCheck(this, Select);
-});
+var _render = /*#__PURE__*/new WeakSet();
+var _setup = /*#__PURE__*/new WeakSet();
+var Select = /*#__PURE__*/function () {
+  function Select(selector, options) {
+    _classCallCheck(this, Select);
+    _classPrivateMethodInitSpec(this, _setup);
+    _classPrivateMethodInitSpec(this, _render);
+    this.selector = document.querySelector(selector);
+    this.options = options;
+    this.selectedId = options.selectedId;
+    _classPrivateMethodGet(this, _render, _render2).call(this);
+    _classPrivateMethodGet(this, _setup, _setup2).call(this);
+  }
+  _createClass(Select, [{
+    key: "clickHandler",
+    value: function clickHandler(event) {
+      var type = event.target.dataset.type; // или const type  = event.target.dataset.type
+
+      if (type === 'input') {
+        this.toggle();
+      } else if (type === 'item') {
+        var id = event.target.dataset.id;
+        this.select(id);
+      } else if (type === 'backdrop') {
+        this.close();
+      }
+    }
+  }, {
+    key: "isOpen",
+    get: function get() {
+      return this.selector.classList.contains('open');
+    }
+  }, {
+    key: "current",
+    get: function get() {
+      var _this = this;
+      return this.options.data.find(function (item) {
+        return item.id === _this.selectedId;
+      });
+    }
+  }, {
+    key: "select",
+    value: function select(id) {
+      this.selectedId = id;
+      this.item.textContent = this.current.value;
+      this.selector.querySelectorAll('[data-type="item"]').forEach(function (el) {
+        el.classList.remove('selected');
+      });
+      this.selector.querySelector("[data-id=\"".concat(id, "\"]")).classList.add('selected');
+      this.close();
+    }
+  }, {
+    key: "toggle",
+    value: function toggle() {
+      this.isOpen ? this.close() : this.open();
+    }
+  }, {
+    key: "open",
+    value: function open() {
+      this.selector.classList.add('open');
+      var arrowDown = document.querySelector('.arrow-down');
+      arrowDown.classList.remove('arrow-down');
+      arrowDown.classList.add('arrow-up');
+    }
+  }, {
+    key: "close",
+    value: function close() {
+      this.selector.classList.remove('open');
+      var arrowUp = document.querySelector('.arrow-up');
+      arrowUp.classList.remove('arrow-up');
+      arrowUp.classList.add('arrow-down');
+    }
+
+    /* можно програмно удалить весь объект select и слушатель события с помощью s.destroy() ,например, написав эту команду в консоли браузера или также обратившись к объекту select.destroy(); в редакторе IDE, т.к. select это наш объект класса Select */
+  }, {
+    key: "destroy",
+    value: function destroy() {
+      this.selector.removeEventListener('click', this.clickHandler);
+      this.selector.innerHTML = '';
+    }
+  }]);
+  return Select;
+}();
 exports.Select = Select;
+function _render2() {
+  var _this$options = this.options,
+    placeholder = _this$options.placeholder,
+    data = _this$options.data;
+  this.selector.classList.add('select');
+  this.selector.innerHTML = getTemplate(data, placeholder, this.selectedId);
+}
+function _setup2() {
+  this.selector.addEventListener('click', this.clickHandler.bind(this));
+  this.item = this.selector.querySelector('[data-type="value"]');
+}
 },{}],"C:/Users/Руслан/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 function getBundleURLCached() {
@@ -197,7 +303,32 @@ module.hot.accept(reloadCSS);
 
 var _select = require("./select/select");
 require("./select/styles.scss");
-var select = new _select.Select();
+var select = new _select.Select('#select', {
+  placeholder: 'Выбери пожалуйста элемент',
+  //   selectedId: '3',
+  data: [{
+    id: '1',
+    value: 'React'
+  }, {
+    id: '2',
+    value: 'Angular'
+  }, {
+    id: '3',
+    value: 'Vue'
+  }, {
+    id: '4',
+    value: 'React Native'
+  }, {
+    id: '5',
+    value: 'Next'
+  }, {
+    id: '6',
+    value: 'Nest'
+  }]
+});
+
+//привязываем объект select к window для того, чтобы он там появился в качестве глобального объекта s для управления извне, например, в консоли s.destroy() для удаления всего плагина.
+window.s = select;
 },{"./select/select":"select/select.js","./select/styles.scss":"select/styles.scss"}],"C:/Users/Руслан/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -223,7 +354,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62594" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57171" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

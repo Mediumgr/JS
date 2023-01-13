@@ -1,3 +1,5 @@
+$height: 48px;
+
 .app {
     padding-top: 5rem;
     display: flex;
@@ -8,19 +10,15 @@
     width: 500px;
 }
 
-$height: 48px;
-
 .select {
     width: 500px;
     position: relative;
     z-index: 100;
 
-    &:before {
-        content: "";
+    & .arrow-down {
         position: absolute;
         right: 20px;
         top: 17px;
-        z-index: 10;
         width: 8px;
         height: 8px;
         border: 2px solid #333;
@@ -28,7 +26,19 @@ $height: 48px;
         border-right: 2px solid #fff;
         transform: rotate(-45deg);
         transition: 0.5s;
-        pointer-events: none;
+    }
+
+    & .arrow-up {
+        position: absolute;
+        right: 20px;
+        top: 22px;
+        width: 8px;
+        height: 8px;
+        border: 2px solid #333;
+        border-top: 2px solid #fff;
+        border-right: 2px solid #fff;
+        transform: rotate(-225deg);
+        transition: 0.5s;
     }
 
     &.open {
@@ -55,7 +65,7 @@ $height: 48px;
         position: absolute;
         border: 1px solid #ccc;
         border-radius: 5px;
-        top: $height;
+        top: $height + 5px;
         left: 0;
         right: 0;
         max-height: 200px;

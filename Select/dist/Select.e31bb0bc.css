@@ -13,12 +13,10 @@
   position: relative;
   z-index: 100;
 }
-.select:before {
-  content: "";
+.select .arrow-down {
   position: absolute;
   right: 20px;
   top: 17px;
-  z-index: 10;
   width: 8px;
   height: 8px;
   border: 2px solid #333;
@@ -26,7 +24,18 @@
   border-right: 2px solid #fff;
   transform: rotate(-45deg);
   transition: 0.5s;
-  pointer-events: none;
+}
+.select .arrow-up {
+  position: absolute;
+  right: 20px;
+  top: 22px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid #333;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: rotate(-225deg);
+  transition: 0.5s;
 }
 .select.open .select__dropdown {
   display: block;
@@ -48,7 +57,7 @@
   position: absolute;
   border: 1px solid #ccc;
   border-radius: 5px;
-  top: 48px;
+  top: 53px;
   left: 0;
   right: 0;
   max-height: 200px;
