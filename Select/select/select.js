@@ -44,7 +44,7 @@ export class Select {
 
   #setup() {
     this.selector.addEventListener('click', this.clickHandler.bind(this));
-    this.item = this.selector.querySelector('[data-type="value"]');
+    this.firstItem = this.selector.querySelector('[data-type="value"]');
   }
 
   clickHandler(event) {
@@ -70,7 +70,7 @@ export class Select {
 
   select(id) {
     this.selectedId = id;
-    this.item.textContent = this.current.value;
+    this.firstItem.textContent = this.current.value;
 
     this.selector.querySelectorAll('[data-type="item"]').forEach((el) => {
       el.classList.remove('selected');
