@@ -13,8 +13,8 @@ const getTemplate = (data = [], placeholder, selectedId) => {
   });
 
   return `
-    <span class="arrow-down"></span>
     <div class="select__backdrop" data-type="backdrop"></div>
+    <span class="arrow-down"></span>
     <div class="select__input" data-type="input">
       <span data-type="value">${text}</span>
     </div>

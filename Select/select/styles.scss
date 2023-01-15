@@ -22,8 +22,8 @@ $height: 48px;
         width: 8px;
         height: 8px;
         border: 2px solid #333;
-        border-top: 2px solid #fff;
-        border-right: 2px solid #fff;
+        border-top: transparent;
+        border-right: transparent;
         transform: rotate(-45deg);
         transition: 0.5s;
     }
@@ -35,8 +35,8 @@ $height: 48px;
         width: 8px;
         height: 8px;
         border: 2px solid #333;
-        border-top: 2px solid #fff;
-        border-right: 2px solid #fff;
+        border-top: transparent;
+        border-right: transparent;
         transform: rotate(-225deg);
         transition: 0.5s;
     }
