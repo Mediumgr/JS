@@ -5,6 +5,14 @@ body {
     font-family: "Roboto", sans-serif;
 }
 
+label {
+    display: none;
+}
+
+img {
+    display: block;
+}
+
 .container {
     padding-top: 5rem;
     width: 800px;
@@ -80,7 +88,7 @@ input[type="file"] {
 }
 
 .preview-image:hover .preview-info {
-    bottom: 4px;
+    bottom: 0;
 }
 
 .preview-remove {
