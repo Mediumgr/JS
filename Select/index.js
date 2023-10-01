@@ -1,5 +1,5 @@
-import { Select } from './select/select';
-import './select/styles.scss';
+import { Select } from './select';
+import './styles.scss';
 
 const select = new Select('#select', {
   placeholder: 'Выбери пожалуйста элемент',

@@ -1,0 +1,1 @@
+запуск: parcel index.html
